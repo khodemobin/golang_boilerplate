@@ -1,4 +1,4 @@
-FROM registry.pio.ir/library/golang:1.17.4-alpine3.15
+FROM golang:alpine
 
 COPY . /app
 
