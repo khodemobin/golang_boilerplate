@@ -21,4 +21,4 @@ docker/data
 .vscode
 .idea
 .env
-logs/*
+/logs/*

@@ -4,7 +4,7 @@ import (
 	l "log"
 	"os"
 
-	"github.com/khodemobin/pio/provider/pkg/logger"
+	"github.com/khodemobin/golang_boilerplate/pkg/logger"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -14,7 +14,7 @@ type log struct {
 }
 
 func New() logger.Logger {
-	f, err := os.OpenFile("logs/app.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	f, err := os.OpenFile("logs/app.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0o666)
 	if err != nil {
 		l.Fatalln(err)
 	}
@@ -33,18 +33,22 @@ func New() logger.Logger {
 	return &log{sugarLogger}
 }
 
-func (l *log) Error(err error) {
-	l.zap.Error(err.Error())
+func (log *log) Error(err error) {
+	l.Println(err.Error())
+	log.zap.Error(err.Error())
 }
 
-func (l *log) Fatal(err error) {
-	l.zap.Fatal(err.Error())
+func (log *log) Fatal(err error) {
+	l.Println(err.Error())
+	log.zap.Fatal(err.Error())
 }
 
-func (l *log) Warn(msg string) {
-	l.zap.Warn(msg)
+func (log *log) Warn(msg string) {
+	l.Println(msg)
+	log.zap.Warn(msg)
 }
 
-func (l *log) Info(msg string) {
-	l.zap.Info(msg)
+func (log *log) Info(msg string) {
+	l.Println(msg)
+	log.zap.Info(msg)
 }

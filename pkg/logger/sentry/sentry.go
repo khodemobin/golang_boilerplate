@@ -4,8 +4,8 @@ import (
 	l "log"
 
 	"github.com/getsentry/sentry-go"
-	"github.com/khodemobin/pio/provider/internal/config"
-	"github.com/khodemobin/pio/provider/pkg/logger"
+	"github.com/khodemobin/golang_boilerplate/internal/config"
+	"github.com/khodemobin/golang_boilerplate/pkg/logger"
 )
 
 type log struct{}

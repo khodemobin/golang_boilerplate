@@ -2,88 +2,59 @@ package config
 
 import (
 	"log"
-	"os"
+	"path/filepath"
+	"runtime"
 
-	"github.com/joho/godotenv"
+	"github.com/ilyakaznacheev/cleanenv"
 )
 
 type App struct {
-	Port string
-	Env  string
+	Port int    `env:"APP_PORT" env-default:"8000"`
+	Env  string `env:"APP_ENV" env-default:"local"`
+}
+
+type Jwt struct {
+	JwtSecret string `env:"JWT_SECRET" env-default:"test"`
+	JwtTTL    int    `env:"JWT_TTL" env-default:"3600"`
 }
 
 type DB struct {
-	Host     string
-	Database string
-	User     string
-	Password string
-	Port     string
-}
-
-type Rabbit struct {
-	Host     string
-	Port     string
-	User     string
-	Password string
-	VHost    string
+	Host     string `env:"DB_HOST" env-default:"localhost"`
+	Database string `env:"DB_DATABASE" env-default:"test"`
+	User     string `env:"DB_USER" env-default:"test"`
+	Password string `env:"DB_PASSWORD" env-default:"secret"`
+	Port     int    `env:"DB_PORT" env-default:"3306"`
 }
 
 type Sentry struct {
-	Dsn string
+	Dsn string `env:"SENTRY_DSN" env-default:""`
 }
 
 type Redis struct {
-	Address  string
-	Password string
-	PoolSize string
-	Database string
+	Address  string `env:"REDIS_ADDRESS" env-default:"localhost"`
+	Password string `env:"REDIS_PASSWORD" env-default:"secret"`
+	PoolSize int    `env:"REDIS_PO0L_SIZE" env-default:"10"`
+	Database int    `env:"REDIS_DATABASE" env-default:"0"`
 }
 
 type Config struct {
 	App    App
+	Jwt    Jwt
 	DB     DB
-	Rabbit Rabbit
 	Sentry Sentry
 	Redis  Redis
 }
 
+var cfg Config
+
 func New() *Config {
-	readConfig()
+	_, b, _, _ := runtime.Caller(0)
+	path := filepath.Join(filepath.Dir(b), "../..")
 
-	return &Config{
-		App: App{
-			Port: os.Getenv("APP_PORT"),
-			Env:  os.Getenv("APP_ENV"),
-		},
-		DB: DB{
-			Host:     os.Getenv("DB_HOST"),
-			Database: os.Getenv("DB_DATABASE"),
-			User:     os.Getenv("DB_USER"),
-			Port:     os.Getenv("DB_PORT"),
-			Password: os.Getenv("DB_PASSWORD"),
-		},
-		Rabbit: Rabbit{
-			Host:     os.Getenv("RABBIT_HOST"),
-			Port:     os.Getenv("RABBIT_PORT"),
-			User:     os.Getenv("RABBIT_USER"),
-			Password: os.Getenv("RABBIT_PASSWORD"),
-			VHost:    os.Getenv("RABBIT_VHOST"),
-		},
-		Sentry: Sentry{
-			Dsn: os.Getenv("SENTRY_DNS"),
-		},
-		Redis: Redis{
-			Address:  os.Getenv("REDIS_ADDRESS"),
-			Password: os.Getenv("REDIS_PASSWORD"),
-			PoolSize: os.Getenv("REDIS_POOL_SIZE"),
-			Database: os.Getenv("REDIS_DATABASE"),
-		},
-	}
-}
-
-func readConfig() {
-	err := godotenv.Load()
+	err := cleanenv.ReadConfig(path+"/.env", &cfg)
 	if err != nil {
-		log.Println("error load config", err)
+		log.Fatalln("error load config", err)
 	}
+
+	return &cfg
 }

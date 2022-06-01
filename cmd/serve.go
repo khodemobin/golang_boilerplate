@@ -8,49 +8,32 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/khodemobin/pio/provider/internal/cache"
-	"github.com/khodemobin/pio/provider/internal/config"
-	"github.com/khodemobin/pio/provider/internal/repository"
-	"github.com/khodemobin/pio/provider/internal/server"
-	"github.com/khodemobin/pio/provider/internal/service"
-	"github.com/khodemobin/pio/provider/pkg/helper"
-	"github.com/khodemobin/pio/provider/pkg/logger"
-	"github.com/khodemobin/pio/provider/pkg/logger/sentry"
-	"github.com/khodemobin/pio/provider/pkg/logger/zap"
-	"github.com/khodemobin/pio/provider/pkg/messager/rabbit"
-	"github.com/khodemobin/pio/provider/pkg/mysql"
-	"github.com/khodemobin/pio/provider/pkg/redis"
+	"github.com/khodemobin/golang_boilerplate/app"
+	"github.com/khodemobin/golang_boilerplate/internal/handler"
+	"github.com/khodemobin/golang_boilerplate/internal/server"
+	"github.com/khodemobin/golang_boilerplate/pkg/helper"
+
+	"github.com/spf13/cobra"
 )
 
-func Execute() {
-	// init main components
-	config := config.New()
-
-	var logger logger.Logger
-	if helper.IsLocal(config) {
-		logger = zap.New()
-	} else {
-		logger = sentry.New(config)
+func ServeCommand() *cobra.Command {
+	cmdServe := &cobra.Command{
+		Use:   "serve",
+		Short: "Serve application",
+		Run: func(cmd *cobra.Command, args []string) {
+			Execute()
+		},
 	}
+	return cmdServe
+}
 
-	msg := rabbit.New(config, logger)
-	db := mysql.New(config, logger)
-	redis := redis.New(config, logger)
-
-	cache := cache.New(redis, logger)
-
-	defer db.Close()
-	defer cache.Close()
-
-	repository := repository.NewRepository(db.DB, cache)
-	service := service.NewService(repository, logger, msg)
-
+func Execute() {
 	// start server
-	restServer := server.New(service, helper.IsLocal(config), logger)
+	restServer := server.New(&handler.Handler{}, helper.IsLocal())
 	go func() {
-		if err := restServer.Start(helper.IsLocal(config), config.App.Port); err != nil {
+		if err := restServer.Start(helper.IsLocal(), app.Config().App.Port); err != nil {
 			msg := fmt.Sprintf("error happen while serving: %v", err)
-			logger.Error(errors.New(msg))
+			app.Log().Error(errors.New(msg))
 			log.Println(msg)
 		}
 	}()

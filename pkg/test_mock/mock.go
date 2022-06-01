@@ -1,19 +1,18 @@
 package test_mock
 
 import (
-	"log"
+	"os"
+	"testing"
 
-	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/jmoiron/sqlx"
+	"github.com/khodemobin/golang_boilerplate/app"
+	"github.com/khodemobin/golang_boilerplate/pkg/cache"
+	"github.com/khodemobin/golang_boilerplate/pkg/logger/syslog"
 )
 
-func NewMock() (*sqlx.DB, sqlmock.Sqlmock) {
-	mockDB, mock, err := sqlmock.New()
-	db := sqlx.NewDb(mockDB, "sqlmock")
-
-	if err != nil {
-		log.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
-	}
-
-	return db, mock
+func NewMock(t *testing.T) {
+	os.Setenv("APP_ENV", "test")
+	app.New()
+	logger := syslog.New()
+	redis := cache.NewTest(t, logger)
+	app.Container.Cache = redis
 }
