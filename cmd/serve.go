@@ -9,7 +9,6 @@ import (
 	"syscall"
 
 	"github.com/khodemobin/golang_boilerplate/app"
-	"github.com/khodemobin/golang_boilerplate/internal/handler"
 	"github.com/khodemobin/golang_boilerplate/internal/server"
 	"github.com/khodemobin/golang_boilerplate/pkg/helper"
 
@@ -29,7 +28,7 @@ func ServeCommand() *cobra.Command {
 
 func Execute() {
 	// start server
-	restServer := server.New(&handler.Handler{}, helper.IsLocal())
+	restServer := server.New(helper.IsLocal())
 	go func() {
 		if err := restServer.Start(helper.IsLocal(), app.Config().App.Port); err != nil {
 			msg := fmt.Sprintf("error happen while serving: %v", err)

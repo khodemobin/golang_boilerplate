@@ -9,14 +9,13 @@ import (
 	fiberLogger "github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/khodemobin/golang_boilerplate/app"
-	"github.com/khodemobin/golang_boilerplate/internal/handler"
 )
 
 type Server struct {
 	app *fiber.App
 }
 
-func New(handler *handler.Handler, isLocal bool) *Server {
+func New(isLocal bool) *Server {
 	return &Server{
 		app: fiber.New(fiber.Config{
 			Prefork: !isLocal,
