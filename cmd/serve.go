@@ -41,9 +41,9 @@ func Execute() {
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, os.Interrupt, syscall.SIGTERM)
 	<-signalChan
-	fmt.Println("Received an interrupt, closing connections...")
+	app.Log().Info("Received an interrupt, closing connections...")
 
 	if err := restServer.Shutdown(); err != nil {
-		fmt.Println("Rest server doesn't shutdown in 10 seconds")
+		app.Log().Info("Rest server doesn't shutdown in 10 seconds")
 	}
 }
