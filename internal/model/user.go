@@ -10,8 +10,8 @@ import (
 
 type User struct {
 	ID        uint           `gorm:"primarykey" db:"id" faker:"-"`
-	Email     *string        `db:"phone" faker:"phone_number"`
-	Username  *string        `db:"phone" faker:"phone_number"`
+	Email     *string        `db:"email" faker:"email"`
+	Username  *string        `db:"username" faker:"username"`
 	Password  *string        `db:"password" faker:"password" `
 	CreatedAt time.Time      `faker:"-"`
 	UpdatedAt time.Time      `faker:"-"`
