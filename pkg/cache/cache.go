@@ -8,5 +8,5 @@ type Cache interface {
 	Delete(key string) error
 	Pull(key string, defaultValue func() (string, error)) (string, error)
 	Remember(key string, defaultValue func() (string, time.Duration, error)) (string, error)
-	Close()
+	Close() error
 }

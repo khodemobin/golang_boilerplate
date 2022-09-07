@@ -1,4 +1,4 @@
-package user_agent
+package helper
 
 import (
 	"bytes"
@@ -55,8 +55,8 @@ const (
 	Applebot            = "Applebot"
 )
 
-// Parse user agent string returning UserAgent struct
-func Parse(userAgent string) UserAgent {
+// UserAgentParse Parse user agent string returning UserAgent struct
+func UserAgentParse(userAgent string) UserAgent {
 	ua := UserAgent{
 		String: userAgent,
 	}

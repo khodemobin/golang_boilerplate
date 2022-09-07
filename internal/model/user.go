@@ -1,11 +1,10 @@
 package model
 
 import (
+	"github.com/go-faker/faker/v4"
 	"time"
 
 	"gorm.io/gorm"
-
-	"github.com/bxcodec/faker/v3"
 )
 
 type User struct {

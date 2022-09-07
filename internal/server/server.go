@@ -2,13 +2,14 @@ package server
 
 import (
 	"fmt"
+	"github.com/khodemobin/golang_boilerplate/internal/app"
+	"github.com/khodemobin/golang_boilerplate/internal/server/middleware"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	fiberLogger "github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
-	"github.com/khodemobin/golang_boilerplate/app"
 )
 
 type Server struct {
@@ -34,6 +35,9 @@ func (r *Server) Start(isLocal bool, port int) error {
 		r.app.Use(fiberLogger.New())
 	} else {
 		r.app.Use(recover.New(), compress.New())
+		r.app.Use(middleware.NewSentryFiber(middleware.Options{
+			Repanic: true,
+		}))
 	}
 
 	r.app.Use(cors.New(cors.Config{

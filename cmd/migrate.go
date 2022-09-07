@@ -2,8 +2,7 @@ package cmd
 
 import (
 	"database/sql"
-
-	"github.com/khodemobin/golang_boilerplate/app"
+	"github.com/khodemobin/golang_boilerplate/internal/app"
 	"github.com/khodemobin/golang_boilerplate/pkg/mysql"
 	"github.com/pressly/goose/v3"
 	"github.com/spf13/cobra"

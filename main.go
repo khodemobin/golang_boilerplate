@@ -1,9 +1,9 @@
 package main
 
 import (
+	"github.com/khodemobin/golang_boilerplate/internal/app"
 	"log"
 
-	"github.com/khodemobin/golang_boilerplate/app"
 	"github.com/khodemobin/golang_boilerplate/cmd"
 	"github.com/spf13/cobra"
 )

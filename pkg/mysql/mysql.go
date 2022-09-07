@@ -5,40 +5,34 @@ import (
 	"log"
 
 	"github.com/khodemobin/golang_boilerplate/internal/config"
-	"github.com/khodemobin/golang_boilerplate/pkg/logger"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	l "gorm.io/gorm/logger"
 )
 
 type Mysql struct {
-	logger logger.Logger
-	DB     *gorm.DB
+	DB *gorm.DB
 }
 
-func New(cfg *config.Config, logger logger.Logger) *Mysql {
+func New(cfg *config.Config) (*Mysql, error) {
 	db, err := gorm.Open(mysql.Open(Dsn(cfg)), &gorm.Config{
 		Logger: l.Default.LogMode(l.Silent),
 	})
 	if err != nil {
-		logger.Fatal(err)
+		return nil, err
 	}
 
 	return &Mysql{
-		logger: logger,
-		DB:     db,
-	}
+		DB: db,
+	}, nil
 }
 
-func (m *Mysql) Close() {
+func (m *Mysql) Close() error {
 	sqlDB, err := m.DB.DB()
 	if err != nil {
 		log.Fatalln(err)
 	}
-	err = sqlDB.Close()
-	if err != nil {
-		m.logger.Fatal(err)
-	}
+	return sqlDB.Close()
 }
 
 func Dsn(c *config.Config) string {

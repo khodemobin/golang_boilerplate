@@ -3,12 +3,12 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"github.com/khodemobin/golang_boilerplate/internal/app"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"github.com/khodemobin/golang_boilerplate/app"
 	"github.com/khodemobin/golang_boilerplate/internal/server"
 	"github.com/khodemobin/golang_boilerplate/pkg/helper"
 

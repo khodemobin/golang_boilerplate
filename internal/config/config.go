@@ -13,11 +13,6 @@ type App struct {
 	Env  string `env:"APP_ENV" env-default:"local"`
 }
 
-type Jwt struct {
-	JwtSecret string `env:"JWT_SECRET" env-default:"test"`
-	JwtTTL    int    `env:"JWT_TTL" env-default:"3600"`
-}
-
 type DB struct {
 	Host     string `env:"DB_HOST" env-default:"localhost"`
 	Database string `env:"DB_DATABASE" env-default:"test"`
@@ -39,7 +34,6 @@ type Redis struct {
 
 type Config struct {
 	App    App
-	Jwt    Jwt
 	DB     DB
 	Sentry Sentry
 	Redis  Redis

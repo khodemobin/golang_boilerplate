@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/khodemobin/golang_boilerplate/app"
+	"github.com/khodemobin/golang_boilerplate/internal/app"
 	"github.com/khodemobin/golang_boilerplate/internal/model"
 	"github.com/khodemobin/golang_boilerplate/pkg/encrypt"
 	"github.com/spf13/cobra"
