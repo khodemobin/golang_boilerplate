@@ -5,12 +5,12 @@ import (
 
 	"github.com/khodemobin/golang_boilerplate/internal/config"
 	"github.com/khodemobin/golang_boilerplate/pkg/cache"
-	"github.com/khodemobin/golang_boilerplate/pkg/db"
 	"github.com/khodemobin/golang_boilerplate/pkg/helper"
 	"github.com/khodemobin/golang_boilerplate/pkg/logger"
 	"github.com/khodemobin/golang_boilerplate/pkg/logger/sentry"
 	"github.com/khodemobin/golang_boilerplate/pkg/logger/syslog"
 	"github.com/khodemobin/golang_boilerplate/pkg/logger/zap"
+	"github.com/khodemobin/golang_boilerplate/pkg/mysql"
 	"github.com/khodemobin/golang_boilerplate/pkg/redis"
 
 	"gorm.io/gorm"
@@ -38,7 +38,7 @@ func New() {
 		logger = sentry.New(Container.Config)
 	}
 
-	db := db.New(config, logger).DB
+	db := mysql.New(config, logger).DB
 	rc := redis.New(config, logger)
 	cache := cache.New(rc, logger)
 

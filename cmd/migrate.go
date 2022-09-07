@@ -4,7 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/khodemobin/golang_boilerplate/app"
-	"github.com/khodemobin/golang_boilerplate/pkg/db"
+	"github.com/khodemobin/golang_boilerplate/pkg/mysql"
 	"github.com/pressly/goose/v3"
 	"github.com/spf13/cobra"
 )
@@ -15,7 +15,7 @@ func MigrateCommand() *cobra.Command {
 		Short: "Migrate database [ up & down & create]",
 		Args:  cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			sql, _ := sql.Open("mysql", db.Dsn(app.Config()))
+			sql, _ := sql.Open("mysql", mysql.Dsn(app.Config()))
 			dir := "migrations"
 			err := goose.SetDialect("mysql")
 			if err != nil {

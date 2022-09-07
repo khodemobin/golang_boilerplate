@@ -10,7 +10,7 @@ import (
 func SeedCommand() *cobra.Command {
 	cmdSeed := &cobra.Command{
 		Use:   "seed",
-		Short: "Insert fake data to db",
+		Short: "Insert fake data to mysql",
 		Run: func(cmd *cobra.Command, args []string) {
 			pass, _ := encrypt.Hash("123456")
 			email := "mobin@gmail.com"

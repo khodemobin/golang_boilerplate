@@ -9,10 +9,10 @@ import (
 )
 
 type User struct {
-	ID        uint           `gorm:"primarykey" db:"id" faker:"-"`
-	Email     *string        `db:"email" faker:"email"`
-	Username  *string        `db:"username" faker:"username"`
-	Password  *string        `db:"password" faker:"password" `
+	ID        uint           `gorm:"primarykey" mysql:"id" faker:"-"`
+	Email     *string        `mysql:"email" faker:"email"`
+	Username  *string        `mysql:"username" faker:"username"`
+	Password  *string        `mysql:"password" faker:"password" `
 	CreatedAt time.Time      `faker:"-"`
 	UpdatedAt time.Time      `faker:"-"`
 	DeletedAt gorm.DeletedAt `gorm:"index" faker:"-"`
