@@ -8,7 +8,6 @@ require (
 	github.com/go-errors/errors v1.4.2
 	github.com/go-faker/faker/v4 v4.1.1
 	github.com/go-playground/validator/v10 v10.14.1
-	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-redis/redis/v9 v9.0.0-rc.2
 	github.com/gofiber/fiber/v2 v2.47.0
 	github.com/ilyakaznacheev/cleanenv v1.4.2
