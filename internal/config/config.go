@@ -16,7 +16,7 @@ type App struct {
 type DB struct {
 	Host     string `env:"DB_HOST" env-default:"localhost"`
 	Database string `env:"DB_DATABASE" env-default:"test"`
-	User     string `env:"DB_USER" env-default:"test"`
+	User     string `env:"DB_USERNAME" env-default:"test"`
 	Password string `env:"DB_PASSWORD" env-default:"secret"`
 	Port     int    `env:"DB_PORT" env-default:"3306"`
 }

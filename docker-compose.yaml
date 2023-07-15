@@ -1,14 +1,14 @@
 version: '3.8'
 services:
-  # search-service-container:
-  #   build:
-  #     context: .
-  #   restart: always
-  #   tty: true
-  #   ports:
-  #     - '${APP_PORT-3000}:3000'
+  container:
+    build:
+      context: .
+    restart: always
+    tty: true
+    ports:
+      - '${APP_PORT-3000}:3000'
 
-  search-service-elasticsearch:
+  elasticsearch:
     container_name: search-service-elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:8.6.2
     volumes:
@@ -26,7 +26,7 @@ services:
       - "${FORWARD_ELASTIC_PORT-9200}:9200"
     restart: always
 
-  search-service-pgsql:
+  pgsql:
     image: postgres:15.2
     ports:
       - '${FORWARD_DB_PORT-5432}:5432'
@@ -38,7 +38,7 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
 
-  search-service-redis:
+  redis:
     image: "redis:alpine"
     volumes:
       - "./docker/data/redis/:/data"
