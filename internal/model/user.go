@@ -1,17 +1,18 @@
 package model
 
 import (
-	"github.com/go-faker/faker/v4"
 	"time"
+
+	"github.com/go-faker/faker/v4"
 
 	"gorm.io/gorm"
 )
 
 type User struct {
-	ID        uint           `gorm:"primarykey" mysql:"id" faker:"-"`
-	Email     *string        `mysql:"email" faker:"email"`
-	Username  *string        `mysql:"username" faker:"username"`
-	Password  *string        `mysql:"password" faker:"password" `
+	ID        uint           `gorm:"primarykey" column:"id" faker:"-"`
+	Email     *string        `column:"email" faker:"email"`
+	Username  *string        `column:"username" faker:"username"`
+	Password  *string        `column:"password" faker:"password" `
 	CreatedAt time.Time      `faker:"-"`
 	UpdatedAt time.Time      `faker:"-"`
 	DeletedAt gorm.DeletedAt `gorm:"index" faker:"-"`

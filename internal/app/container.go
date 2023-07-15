@@ -1,16 +1,16 @@
 package app
 
 import (
-	redisDriver "github.com/go-redis/redis/v8"
+	redisDriver "github.com/go-redis/redis/v9"
 	"github.com/khodemobin/golang_boilerplate/pkg/helper"
 	"github.com/khodemobin/golang_boilerplate/pkg/logger/sentry"
 	"github.com/khodemobin/golang_boilerplate/pkg/logger/syslog"
 	"github.com/khodemobin/golang_boilerplate/pkg/logger/zap"
+	"github.com/khodemobin/golang_boilerplate/pkg/pgsql"
 
 	"github.com/khodemobin/golang_boilerplate/internal/config"
 	"github.com/khodemobin/golang_boilerplate/pkg/cache"
 	"github.com/khodemobin/golang_boilerplate/pkg/logger"
-	"github.com/khodemobin/golang_boilerplate/pkg/mysql"
 	"github.com/khodemobin/golang_boilerplate/pkg/redis"
 
 	"gorm.io/gorm"
@@ -38,7 +38,7 @@ func New() {
 		clog = sentry.New(c.Config)
 	}
 
-	db, err := mysql.New(cfg)
+	db, err := pgsql.New(cfg)
 	if err != nil {
 		clog.Fatal(err)
 	}

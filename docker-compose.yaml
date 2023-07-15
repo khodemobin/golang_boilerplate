@@ -1,45 +1,51 @@
 version: '3.8'
 services:
-  app:
-    build:
-      context: .
-      dockerfile: ./docker
-    restart: unless-stopped
-    tty: true
-    ports:
-      - "3000:3000"
-    networks:
-      - app
-    depends_on:
-      - mysql
-      - redis
-  mysql:
-    image: "mariadb:latest"
-    ports:
-      - "${DB_PORT}:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
-      MYSQL_DATABASE: "${DB_DATABASE}"
-      MYSQL_USER: "${DB_USER}"
-      MYSQL_PASSWORD: "${DB_PASSWORD}"
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+  # search-service-container:
+  #   build:
+  #     context: .
+  #   restart: always
+  #   tty: true
+  #   ports:
+  #     - '${APP_PORT-3000}:3000'
+
+  search-service-elasticsearch:
+    container_name: search-service-elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.6.2
     volumes:
-      - "./docker/data/mysql/:/var/lib/mysql"
-    networks:
-      - app
-    healthcheck:
-      test: [ "CMD", "mysqladmin", "ping" ]
-  redis:
-    image: "redis:alpine"
+      - ./docker/data/elastic:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     ports:
-      - "6379:6379"
+      - "${FORWARD_ELASTIC_PORT-9200}:9200"
+    restart: always
+
+  search-service-pgsql:
+    image: postgres:15.2
+    ports:
+      - '${FORWARD_DB_PORT-5432}:5432'
+    volumes:
+      - './docker/data/pgsql:/var/lib/postgresql/data'
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+  search-service-redis:
+    image: "redis:alpine"
     volumes:
       - "./docker/data/redis/:/data"
-    networks:
-      - app
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
 
 networks:
-  app:
-    driver: bridge
+  default:
+    name: tofisa-network
+    external: true
